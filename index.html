@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
+    <title>Expense Tracker</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><div class="logo">Logo</div></li>
+                <li><a class="btn" href="index.html">Expense Tracker</a></li>
+                <li><img src="#" alt="Logo"></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- HERO SECTION -->
+        <section>
+            <div class="two-containers">
+                <!-- HEADING -->
+                <div class="main-headings">
+                    <h1>Expense <span class="main-text">Tracker</span></h1>
+                    <p>This Expense Tracker is a simple web application that<br> helps 
+                    users manage their daily income and expenses in an organized way.
+                    </p>
+                </div>
+                <!-- USER BALANCE -->
+                <div class="User-Balance">
+                    <h2>User <span class="main-text">Balance</span></h2>
+                    <p>$0.00</p>
+                    <p  id="userrname">User</p>
+                    <p id="dailylimit">Dailylimit</p>
+                </div>
+            </div>
+            
+            <!-- TRANSACTION -->
+        <section id="Transaction-Section">
+            <div class="main-container">
+                <h3>Add <span class="main-text">Transaction</span></h3>
+                <div class="input-container">
+                    <label for="label">Enter Name</label>
+                    <input id="textboxname" class="input" placeholder="Name" type="text" minlength="0" maxlength="20" id="label">
+                </div>
+                <div class="input-container">
+                    <label for="textboxdailylimit">Enter Balance</label>
+                    <input class="input" id="textboxbalance" type="number" placeholder="$0.00">
+                </div>
+                 
+                <div class="input-container">
+                    <label for="textbox">Enter Amount</label>
+                    <input class="input" id="textboxamount" type="number" placeholder="$0.00">
+                </div>
+                <div class="input-container">
+                    <label for="dropdownLimit">Select Daily Limit</label> 
+                <select class="list " name="categorylimit" id="dropdownLimit">
+                    <option value=""></option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="1500">1500</option>
+                    <option value="2000">2000</option>
+                </select>
+                    <!-- <label for="textboxdailylimit">Enter Daily Limit</label>
+                    <input class="input" id="textboxdailylimit" type="number" placeholder="$0.00"> -->
+            
+                </div>
+                <div class="input-container">
+                    <label for="dropdownLimit">Expense Type</label> 
+                <select class="list " name="ExpenseType" id="Expense-Type">
+                    <option value=""></option>
+                    <option value="food">Food</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="rent">Rent</option>
+                </select>
+                    <!-- <label for="textboxdailylimit">Enter Daily Limit</label>
+                    <input class="input" id="textboxdailylimit" type="number" placeholder="$0.00"> -->
+                </div>
+                <!-- <div class="input-container">
+                    <label for="dropdown">Transaction Type</label> 
+                <select class="list " name="category" id="dropdown">
+                    <option value=""></option>
+                    
+                    <option value="spend">Withdraw</option>
+                    <option value="add">Add</option>
+                </select>
+
+                </div> -->
+
+                <div class="buttons">
+                    <button id="addtranscation" class="btn">Add Transaction</button>
+                    <!-- <button id="addbtn" class="btn">Add Amount</button> -->
+                    <!-- <button id="spendbtn" class="btn btn-secondary">Withdraw Amount</button> -->
+                </div>
+            </div>
+        </section>
+            <section id="Results-section">
+                <div class="history">
+                    <h3>Transaction <span class="main-text">History</span></h3>
+                    <div class="table">
+                        <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Current Balance</th>
+                                <th>Daily Limit</th>
+                                <th>Expense Type</th>
+                                <th colspan =2>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablebody">
+                            
+                        </tbody>
+                    </table>
+                    </div>
+            </section>
+    </main>
+    <footer>
+        <h3>Owner</h3>
+        <p>Developed By Asfandyar | IT Student And A Web Developer</p>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>
