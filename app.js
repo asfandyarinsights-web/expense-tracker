@@ -1,209 +1,221 @@
-const txtname=document.getElementById("textboxname");
-let usernamep=document.getElementById("userrname");
+// ---------- STATE ----------
+const STORAGE_KEY = "expense-tracker:transactions";
+const BUDGET_KEY = "expense-tracker:budget";
 
-let dailylimitp=document.getElementById("dailylimit");
-const amount=document.getElementById("textboxamount");
+let transactions = loadTransactions();
+let budget = loadBudget();
+let selectedType = "expense";
 
-const balance=document.getElementById("textboxbalance");
+// ---------- ELEMENTS ----------
+const form = document.getElementById("transactionForm");
+const nameInput = document.getElementById("txName");
+const amountInput = document.getElementById("txAmount");
+const categorySelect = document.getElementById("txCategory");
+const formError = document.getElementById("formError");
+const typeButtons = document.querySelectorAll(".type-btn");
 
-const dailylimitamount=document.getElementById("dropdownLimit");
-// const transcationType=document.getElementById("dropdown");
+const balanceFigure = document.getElementById("balanceFigure");
+const totalIncomeEl = document.getElementById("totalIncome");
+const totalExpenseEl = document.getElementById("totalExpense");
 
-const buttonspend=document.getElementById("spendbtn");
-const buttonadd=document.getElementById("addbtn");
+const budgetDisplay = document.getElementById("budgetDisplay");
+const budgetForm = document.getElementById("budgetForm");
+const budgetInput = document.getElementById("budgetInput");
+const editBudgetBtn = document.getElementById("editBudgetBtn");
 
-const expensetype=document.getElementById("Expense-Type");
-const history=document.getElementById("history");
+const txList = document.getElementById("txList");
+const emptyState = document.getElementById("emptyState");
+const historyCount = document.getElementById("historyCount");
 
-const addtransactionbtn=document.getElementById("addtranscation");
-
-addtransactionbtn.addEventListener("click",function(){
-    if(Isvalid()){
-
-        let p1={
-            username:txtname.value,
-            currentbalance:balance.value,
-            dailyLimit:dailylimitamount.value,
-            expenseType:expensetype.value,
-            Amount:amount.value,
-    }
-    array.push(p1); //pushing object into array
-    let index=array.length-1; //storing index of array
-    console.log(index);
-    const tr=document.createElement("tr");
-     const tb=document.getElementById("tablebody");
-     let lastobject=array[array.length-1];//take the last index of array
-     tr.innerHTML+=`<td>${lastobject.username}</td>`;
-     tr.innerHTML+=`<td id="td">${lastobject.currentbalance}</td>`;
-     tr.innerHTML+=`<td>${lastobject.dailyLimit}</td>`;
-     tr.innerHTML+=`<td>${lastobject.expenseType}</td>`;
-     tr.innerHTML+=`<td><button onclick="updateBalanceadd(${index})" class="btn btn-add">Add Balance</button></td>`;
-     tr.innerHTML+=`<td><button onclick="updateBalanceSubtract(${index})" class="btn btn-subtract">Withdraw Balance</button></td>`;
-    
-    tb.appendChild(tr);
-    console.log("transaction Added");
-    clearboxes();
-    console.log("button clicked");
-    console.log(array);  
+// ---------- STORAGE HELPERS ----------
+function loadTransactions() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
 }
-    else{
-        alert("Enter Data First");
-    }
+
+function saveTransactions() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
+}
+
+function loadBudget() {
+  try {
+    const raw = localStorage.getItem(BUDGET_KEY);
+    return raw ? parseFloat(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveBudget() {
+  if (budget === null) {
+    localStorage.removeItem(BUDGET_KEY);
+  } else {
+    localStorage.setItem(BUDGET_KEY, String(budget));
+  }
+}
+
+// ---------- TYPE TOGGLE ----------
+typeButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    selectedType = btn.dataset.type;
+    typeButtons.forEach((b) => {
+      const isActive = b === btn;
+      b.classList.toggle("is-active", isActive);
+      b.setAttribute("aria-checked", String(isActive));
+    });
+  });
 });
 
-let array=[];
-//Add Button Event Handler
-// buttonadd.addEventListener("click",function(){
-//     if(Isvalid()){
-//         let p1={
-//             username:txtname.value,
-//             currentbalance:balance.value,
-//             dailyLimit:dailylimitamount.value,
-//             expenseType:expensetype.value,
-//             Amount:amount.value,
-//     }
-//     array.push(p1); //pushing object into array
-//     let index=array.length-1; //storing index of array
-//     console.log(index);
-//     const tr=document.createElement("tr");
-//      const tb=document.getElementById("tablebody");
-//      let lastobject=array[array.length-1];//take the last index of array
-//      tr.innerHTML+=`<td>${lastobject.username}</td>`;
-//      tr.innerHTML+=`<td id="td">${lastobject.currentbalance}</td>`;
-//      tr.innerHTML+=`<td>${lastobject.dailyLimit}</td>`;
-//      tr.innerHTML+=`<td>${lastobject.expenseType}</td>`;
-//      tr.innerHTML+=`<td><button onclick="updateBalanceadd(${index})" class="btn">Update Balance</button></td>`;
-    
-//     tb.appendChild(tr);
-    
-//     clearboxes();
-//     console.log("button clicked");
-//     console.log(array);  
-// }
-//     else{
-//         alert("Enter Data First");
-//     }
-// });
-// buttonspend.addEventListener("click",function(){
-//     if(Isvalid()){
-//         let p1={
-//             username:txtname.value,
-//             currentbalance:balance.value,
-//             dailyLimit:dailylimitamount.value,
-//             expenseType:expensetype.value,
-//             Amount:amount.value,
-//     }
-//     array.push(p1); //pushing object into array
-//     let index=array.length-1; //storing index of array
-//     console.log(index);
-//     const tr=document.createElement("tr");
-//      const tb=document.getElementById("tablebody");
-//      let lastobject=array[array.length-1];//take the last index of array
-//      tr.innerHTML+=`<td>${lastobject.username}</td>`;
-//      tr.innerHTML+=`<td id="td">${lastobject.currentbalance}</td>`;
-//      tr.innerHTML+=`<td>${lastobject.dailyLimit}</td>`;
-//      tr.innerHTML+=`<td>${lastobject.expenseType}</td>`;
-//      tr.innerHTML+=`<td><button onclick="updateBalanceSubtract(${index})" class="btn">Update Balance</button></td>`;
-    
-//     tb.appendChild(tr);
-    
-//     clearboxes();
-//     console.log("button clicked");
-//     console.log(array);  
-// }
-//     else{
-//         alert("Enter Data First");
-//     }
-// });
-//update balance add
-let newblance=0;
-let currentbalance=0;
-let tabletd=0;
-function updateBalanceadd(index){
-    tabletd=document.getElementById("td");
-    currentbalance=parseFloat(array[index].currentbalance);
-    console.log(currentbalance);
-    newblance=parseFloat(prompt("Enter New Balance"));
-    currentbalance+=newblance;
+// ---------- ADD TRANSACTION ----------
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-    array[index].currentbalance=currentbalance;
-    console.log(currentbalance);
-    tabletd.innerHTML=array[index].currentbalance;
+  const name = nameInput.value.trim();
+  const amount = parseFloat(amountInput.value);
+  const category = categorySelect.value;
 
-    console.log(`index of array is ${index}`);  
-    
-   console.log(`table Row is ${tabletd.value}`);  
-}
-//update balance subtract
-function updateBalanceSubtract(index){
-    
-    tabletd=document.getElementById("td");
-    currentbalance=parseFloat(array[index].currentbalance);
-    console.log(currentbalance);
+  if (!name || isNaN(amount) || amount <= 0) {
+    formError.classList.remove("hidden");
+    return;
+  }
+  formError.classList.add("hidden");
 
-    
-    if(currentbalance!=0){
-        newblance=parseFloat(prompt("Enter New Balance"));
-    currentbalance-=newblance;
-    
-    console.log(currentbalance);
-    
-        array[index].currentbalance=currentbalance;
-        console.log(currentbalance);
-        tabletd.innerHTML=currentbalance;
-        console.log("CR Balance is : "+currentbalance);
-    }
-    else if(currentbalance==0){
-        tabletd.innerHTML=array[index].currentbalance;
-        console.log("CR Balance is : "+currentbalance);
-        tabletd.innerHTML=currentbalance;
-        alert(`You Have With Drawn All Balance Current Balance is : ${currentbalance}`);
-        }
-}
-//clearbox function
-function clearboxes(){
-    txtname.value="";
-    amount.value="";
-    dailylimitamount.value="";
-    expensetype.value="";
-    balance.value="";
-}
+  transactions.unshift({
+    id: Date.now(),
+    name,
+    amount,
+    category: category || "other",
+    type: selectedType,
+    date: new Date().toISOString(),
+  });
 
-//validation function
-function Isvalid(){
-    if(txtname.value!="" && dailylimitamount.value!="" && balance.value!="" 
-        && amount.value!="" && expensetype.value!="")
-    {
-        return true;    
-    }
-    else{
-        return false;
-    }
-}
-//button enable Disable Events
-/*
-transcationType.addEventListener("change",function(){
-
-    if (transcationType.value=="") {
-        buttonspend.disabled=true;
-        buttonadd.disabled=true;
-        buttonadd.innerText="Add Amount Not Clickable";
-        buttonspend.innerText="Withdraw Not Clickable";
-    }
-    else if(transcationType.value=="spend"){
-         buttonspend.disabled=false;
-        buttonadd.disabled=true;
-        buttonadd.innerText="Add Amount Not Clickable";
-        buttonspend.innerText="Withdraw Clickable";
-    }
-    else if(transcationType.value=="add"){
-         buttonspend.disabled=true;
-        buttonadd.disabled=false;
-         buttonadd.innerText="Add Amount Clickable";
-        buttonspend.innerText="Withdraw Not Clickable";
-    }
+  saveTransactions();
+  render();
+  form.reset();
+  categorySelect.value = "";
+  nameInput.focus();
 });
 
-*/
+// ---------- DELETE TRANSACTION ----------
+txList.addEventListener("click", (e) => {
+  const btn = e.target.closest(".tx-delete");
+  if (!btn) return;
+  const id = Number(btn.dataset.id);
+  transactions = transactions.filter((t) => t.id !== id);
+  saveTransactions();
+  render();
+});
 
+// ---------- BUDGET ----------
+editBudgetBtn.addEventListener("click", () => {
+  budgetInput.value = budget ?? "";
+  budgetForm.classList.remove("hidden");
+  budgetDisplay.classList.add("hidden");
+  budgetInput.focus();
+});
 
+budgetForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const value = parseFloat(budgetInput.value);
+  budget = isNaN(value) || value <= 0 ? null : value;
+  saveBudget();
+  budgetForm.classList.add("hidden");
+  budgetDisplay.classList.remove("hidden");
+  render();
+});
+
+// ---------- RENDER ----------
+function formatMoney(n) {
+  return `$${n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+function render() {
+  const income = transactions.filter((t) => t.type === "income").reduce((sum, t) => sum + t.amount, 0);
+  const expense = transactions.filter((t) => t.type === "expense").reduce((sum, t) => sum + t.amount, 0);
+  const balance = income - expense;
+
+  balanceFigure.textContent = formatMoney(balance);
+  totalIncomeEl.textContent = formatMoney(income);
+  totalExpenseEl.textContent = formatMoney(expense);
+
+  renderBudget(expense);
+  renderHistory();
+}
+
+function renderBudget(expense) {
+  if (budget === null) {
+    budgetDisplay.innerHTML = `<p class="budget-empty">No budget set yet.</p>`;
+    return;
+  }
+
+  const pct = Math.min((expense / budget) * 100, 100);
+  const overBy = expense - budget;
+  let fillClass = "";
+  let note = `${formatMoney(Math.max(budget - expense, 0))} left this month`;
+  let noteClass = "";
+
+  if (expense > budget) {
+    fillClass = "is-over";
+    note = `${formatMoney(overBy)} over budget`;
+    noteClass = "is-over";
+  } else if (pct >= 80) {
+    fillClass = "is-warn";
+  }
+
+  budgetDisplay.innerHTML = `
+    <div class="budget-numbers">
+      <span class="spent">${formatMoney(expense)} spent</span>
+      <span class="limit">of ${formatMoney(budget)}</span>
+    </div>
+    <div class="budget-track">
+      <div class="budget-fill ${fillClass}" style="width:${pct}%"></div>
+    </div>
+    <p class="budget-note ${noteClass}">${note}</p>
+  `;
+}
+
+function renderHistory() {
+  historyCount.textContent = `${transactions.length} ${transactions.length === 1 ? "entry" : "entries"}`;
+
+  if (transactions.length === 0) {
+    emptyState.hidden = false;
+    txList.hidden = true;
+    txList.innerHTML = "";
+    return;
+  }
+
+  emptyState.hidden = true;
+  txList.hidden = false;
+
+  txList.innerHTML = transactions
+    .map((t) => `
+      <li class="tx-row is-${t.type}">
+        <span class="tx-sign">${t.type === "income" ? "+" : "−"}</span>
+        <div class="tx-main">
+          <p class="tx-name">${escapeHtml(t.name)}</p>
+          <p class="tx-meta">${t.category} · ${formatDate(t.date)}</p>
+        </div>
+        <span class="tx-amount">${formatMoney(t.amount)}</span>
+        <button class="tx-delete" data-id="${t.id}" aria-label="Delete ${escapeHtml(t.name)}">✕</button>
+      </li>
+    `)
+    .join("");
+}
+
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ---------- INIT ----------
+render();
