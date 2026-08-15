@@ -1,126 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="app.css">
-    <title>Expense Tracker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><div class="logo">Logo</div></li>
-                <li><a class="btn" href="index.html">Expense Tracker</a></li>
-                <li><img src="#" alt="Logo"></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <!-- HERO SECTION -->
-        <section>
-            <div class="two-containers">
-                <!-- HEADING -->
-                <div class="main-headings">
-                    <h1>Expense <span class="main-text">Tracker</span></h1>
-                    <p>This Expense Tracker is a simple web application that<br> helps 
-                    users manage their daily income and expenses in an organized way.
-                    </p>
-                </div>
-                <!-- USER BALANCE -->
-                <div class="User-Balance">
-                    <h2>User <span class="main-text">Balance</span></h2>
-                    <p>$0.00</p>
-                    <p  id="userrname">User</p>
-                    <p id="dailylimit">Dailylimit</p>
-                </div>
-            </div>
-            
-            <!-- TRANSACTION -->
-        <section id="Transaction-Section">
-            <div class="main-container">
-                <h3>Add <span class="main-text">Transaction</span></h3>
-                <div class="input-container">
-                    <label for="label">Enter Name</label>
-                    <input id="textboxname" class="input" placeholder="Name" type="text" minlength="0" maxlength="20" id="label">
-                </div>
-                <div class="input-container">
-                    <label for="textboxdailylimit">Enter Balance</label>
-                    <input class="input" id="textboxbalance" type="number" placeholder="$0.00">
-                </div>
-                 
-                <div class="input-container">
-                    <label for="textbox">Enter Amount</label>
-                    <input class="input" id="textboxamount" type="number" placeholder="$0.00">
-                </div>
-                <div class="input-container">
-                    <label for="dropdownLimit">Select Daily Limit</label> 
-                <select class="list " name="categorylimit" id="dropdownLimit">
-                    <option value=""></option>
-                    <option value="500">500</option>
-                    <option value="1000">1000</option>
-                    <option value="1500">1500</option>
-                    <option value="2000">2000</option>
-                </select>
-                    <!-- <label for="textboxdailylimit">Enter Daily Limit</label>
-                    <input class="input" id="textboxdailylimit" type="number" placeholder="$0.00"> -->
-            
-                </div>
-                <div class="input-container">
-                    <label for="dropdownLimit">Expense Type</label> 
-                <select class="list " name="ExpenseType" id="Expense-Type">
-                    <option value=""></option>
-                    <option value="food">Food</option>
-                    <option value="shopping">Shopping</option>
-                    <option value="utilities">Utilities</option>
-                    <option value="rent">Rent</option>
-                </select>
-                    <!-- <label for="textboxdailylimit">Enter Daily Limit</label>
-                    <input class="input" id="textboxdailylimit" type="number" placeholder="$0.00"> -->
-                </div>
-                <!-- <div class="input-container">
-                    <label for="dropdown">Transaction Type</label> 
-                <select class="list " name="category" id="dropdown">
-                    <option value=""></option>
-                    
-                    <option value="spend">Withdraw</option>
-                    <option value="add">Add</option>
-                </select>
 
-                </div> -->
+  <header class="site-header">
+    <div class="wrap header-row">
+      <div class="brand"><span class="brand-prompt">&gt;</span> expense-tracker<span class="cursor">_</span></div>
+      <div class="status"><span class="status-dot"></span>local session</div>
+    </div>
+  </header>
 
-                <div class="buttons">
-                    <button id="addtranscation" class="btn">Add Transaction</button>
-                    <!-- <button id="addbtn" class="btn">Add Amount</button> -->
-                    <!-- <button id="spendbtn" class="btn btn-secondary">Withdraw Amount</button> -->
-                </div>
+  <main class="wrap">
+
+    <!-- SUMMARY -->
+    <section class="summary" aria-label="Balance summary">
+      <div class="balance-card">
+        <p class="eyebrow">current balance</p>
+        <p class="balance-figure" id="balanceFigure">$0.00</p>
+        <div class="mini-stats">
+          <div class="mini-stat">
+            <span class="mini-label">in</span>
+            <span class="mini-value income" id="totalIncome">$0.00</span>
+          </div>
+          <div class="mini-stat">
+            <span class="mini-label">out</span>
+            <span class="mini-value expense" id="totalExpense">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="budget-card">
+        <div class="budget-head">
+          <p class="eyebrow">monthly budget</p>
+          <button class="link-btn" id="editBudgetBtn" type="button">set</button>
+        </div>
+        <div id="budgetDisplay" class="budget-display">
+          <p class="budget-empty">No budget set yet.</p>
+        </div>
+        <form id="budgetForm" class="budget-form hidden">
+          <label for="budgetInput" class="sr-only">Monthly budget amount</label>
+          <span class="input-prefix">$</span>
+          <input type="number" id="budgetInput" min="0" step="1" placeholder="0" inputmode="decimal">
+          <button type="submit" class="btn btn-ghost">save</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ADD TRANSACTION -->
+    <section class="terminal-card" aria-label="Add a transaction">
+      <div class="terminal-titlebar">
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+        <span class="terminal-title">new-transaction.sh</span>
+      </div>
+
+      <form id="transactionForm" class="terminal-body" novalidate>
+        <div class="field">
+          <label for="txName">name</label>
+          <input type="text" id="txName" maxlength="30" placeholder="e.g. Freelance payment" autocomplete="off">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="txAmount">amount</label>
+            <div class="amount-input">
+              <span class="input-prefix">$</span>
+              <input type="number" id="txAmount" min="0" step="0.01" placeholder="0.00" inputmode="decimal">
             </div>
-        </section>
-            <section id="Results-section">
-                <div class="history">
-                    <h3>Transaction <span class="main-text">History</span></h3>
-                    <div class="table">
-                        <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Current Balance</th>
-                                <th>Daily Limit</th>
-                                <th>Expense Type</th>
-                                <th colspan =2>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablebody">
-                            
-                        </tbody>
-                    </table>
-                    </div>
-            </section>
-    </main>
-    <footer>
-        <h3>Owner</h3>
-        <p>Developed By Asfandyar | IT Student And A Web Developer</p>
-    </footer>
-    <script src="app.js"></script>
+          </div>
+
+          <div class="field">
+            <label for="txCategory">category</label>
+            <select id="txCategory">
+              <option value="">Choose one</option>
+              <option value="food">Food</option>
+              <option value="shopping">Shopping</option>
+              <option value="utilities">Utilities</option>
+              <option value="rent">Rent</option>
+              <option value="transport">Transport</option>
+              <option value="salary">Salary</option>
+              <option value="freelance">Freelance</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">type</span>
+          <div class="type-toggle" role="radiogroup" aria-label="Transaction type">
+            <button type="button" class="type-btn is-active" data-type="expense" role="radio" aria-checked="true">− expense</button>
+            <button type="button" class="type-btn" data-type="income" role="radio" aria-checked="false">+ income</button>
+          </div>
+        </div>
+
+        <p class="form-error hidden" id="formError">Fill in a name and an amount above zero before logging this.</p>
+
+        <button type="submit" class="btn btn-primary btn-block">Log transaction</button>
+      </form>
+    </section>
+
+    <!-- HISTORY -->
+    <section class="history" aria-label="Transaction history">
+      <div class="history-head">
+        <h2>transaction log</h2>
+        <span class="history-count" id="historyCount">0 entries</span>
+      </div>
+
+      <div id="emptyState" class="empty-state">
+        <p class="empty-glyph">&gt;_</p>
+        <p>No transactions logged yet.</p>
+        <p class="empty-sub">Add your first one above to start tracking.</p>
+      </div>
+
+      <ul id="txList" class="tx-list" hidden></ul>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>Developed by <span class="brand-accent">Asfandyar</span> — IT student &amp; web developer</p>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
